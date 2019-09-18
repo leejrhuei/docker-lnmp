@@ -1,10 +1,6 @@
-ARG PHP_VERSION=7.2-fpm
-FROM php:${PHP_VERSION}
+FROM php:7.2-fpm
 
 LABEL maintainer="leejrhuei<leejrhuei@126.com>"
-
-ARG PHP_SWOOLE=4.2.2
-ARG PHP_PHALCON=3.4.1
 
 # set timezone
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -17,38 +13,47 @@ RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list \
 # init
 RUN apt-get update -yqq && \
     apt-get install -y --no-install-recommends \
+    autoconf \
+    automake \
     curl \
-    wget \
-    zip \
-    unzip \
-    vim \
     git \
-    locales \
-    procps \
-    libz-dev \
-    libpq-dev \
-    libjpeg-dev \
-    libpng-dev \
+    keychain \
+    libbz2-dev \
+    libevent-dev \
     libfreetype6-dev \
-    libssl-dev \
+    libgeoip-dev \
+    libgmp3-dev \
+    libicu-dev \
+    libjpeg-dev \
+    libjpeg62-turbo-dev \
+    libldap2-dev \
+    imagemagick \
+    libmagick++-dev \
+    libmaxminddb0 \
+    libmaxminddb-dev \
+    mmdb-bin \
     libmcrypt-dev \
     libmemcached-dev \
+    libpng-dev \
+    libpq-dev \
+    libsqlite3-0 \
+    libsqlite3-dev \
+    libssl-dev \
+    libtidy-dev \
     libtool \
-    libicu-dev \
     libxml2 \
     libxml2-dev \
-    libgmp3-dev \
-    libevent-dev \
+    libyaml-dev \
+    libz-dev \
     libzip-dev \
-    zlib1g-dev \
-    libldap2-dev \
-    libbz2-dev \
-    libjpeg62-turbo-dev \
-    libtidy-dev \
-    libsqlite3-dev \
-    libsqlite3-0 \
+    locales \
+    procps \
     tmux \
-    keychain \
+    unzip \
+    vim \
+    wget \
+    zip \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # 替换VIM鼠标状态为非可视状态
@@ -80,28 +85,70 @@ RUN pecl channel-update pecl.php.net \
     --with-zlib-dir=/usr \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install -j$(nproc) dba bz2 calendar ldap zip json tidy xml xmlrpc wddx pdo_sqlite bcmath mysqli pdo_mysql gd sockets pcntl intl soap gmp mbstring exif bcmath gettext shmop sysvmsg sysvsem sysvshm \
-    && pecl install msgpack \
-    && docker-php-ext-enable msgpack \
-    && pecl install seaslog \
-    && docker-php-ext-enable seaslog \
-    && printf "\n" | pecl install apcu \
+    && pecl install apcu \
     && docker-php-ext-enable apcu \
-    && pecl install mongodb \
-    && docker-php-ext-enable mongodb \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
-    && pecl install inotify \
-    && docker-php-ext-enable inotify \
+    && pecl install event \
+    && docker-php-ext-enable event \
     && pecl install grpc \
     && docker-php-ext-enable grpc \
-    && echo "no\r\/usr/local/php-event/\ryes"|pecl install event \
-    && docker-php-ext-enable event \
+    && pecl install inotify \
+    && docker-php-ext-enable inotify \
+    && pecl install memcached \
+    && docker-php-ext-enable memcached \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb \
+    && pecl install msgpack \
+    && docker-php-ext-enable msgpack \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && pecl install seaslog \
+    && docker-php-ext-enable seaslog \
     && pecl clear-cache
 
+# install geoip extention
+RUN wget --no-check-certificate https://pecl.php.net/get/geoip-1.1.1.tgz \
+    && tar -zxvf geoip-1.1.1.tgz \
+    && rm geoip-1.1.1.tgz \
+    && ( \
+        cd geoip-1.1.1 \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r geoip-1.1.1 \
+    && docker-php-ext-enable geoip
+
+# install imagick extention
+RUN wget --no-check-certificate https://pecl.php.net/get/imagick-3.4.4.tgz \
+    && tar -zxvf imagick-3.4.4.tgz \
+    && rm imagick-3.4.4.tgz \
+    && ( \
+        cd imagick-3.4.4 \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r imagick-3.4.4 \
+    && docker-php-ext-enable imagick
+
+# install maxminddb extention
+RUN wget --no-check-certificate https://github.com/maxmind/MaxMind-DB-Reader-php/archive/master.zip -O MaxMind-DB-Reader-php.zip \
+    && unzip MaxMind-DB-Reader-php.zip \
+    && rm MaxMind-DB-Reader-php.zip \
+    && ( \
+        cd MaxMind-DB-Reader-php-master/ext \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r MaxMind-DB-Reader-php-master \
+    && docker-php-ext-enable maxminddb
+
 # install phalcon extention
-RUN wget --no-check-certificate https://gitee.com/mirrors/cphalcon/repository/archive/v${PHP_PHALCON}.zip -O phalcon.zip \
+RUN wget --no-check-certificate https://gitee.com/mirrors/cphalcon/repository/archive/v3.4.1.zip -O phalcon.zip \
     && unzip phalcon.zip \
     && rm phalcon.zip \
     && ( \
@@ -112,7 +159,7 @@ RUN wget --no-check-certificate https://gitee.com/mirrors/cphalcon/repository/ar
     && docker-php-ext-enable phalcon
 
 # install swoole extention
-RUN wget --no-check-certificate https://gitee.com/swoole/swoole/repository/archive/v${PHP_SWOOLE}.zip -O swoole.zip \
+RUN wget --no-check-certificate https://gitee.com/swoole/swoole/repository/archive/v4.2.2.zip -O swoole.zip \
     && mkdir -p swoole \
     && unzip swoole.zip \
     && rm swoole.zip \
@@ -125,6 +172,20 @@ RUN wget --no-check-certificate https://gitee.com/swoole/swoole/repository/archi
     ) \
     && rm -r swoole \
     && docker-php-ext-enable swoole
+
+# install yaml extention
+RUN wget --no-check-certificate https://pecl.php.net/get/yaml-2.0.4.tgz -O yaml.tgz \
+    && tar -zxvf yaml.tgz \
+    && rm yaml.tgz \
+    && ( \
+        cd yaml-2.0.4 \
+        && phpize \
+        && ./configure \
+        && make -j$(nproc) \
+        && make install \
+    ) \
+    && rm -r yaml-2.0.4 \
+    && docker-php-ext-enable yaml
 
 # install composer
 RUN curl -sS https://install.phpcomposer.com/installer | php \
