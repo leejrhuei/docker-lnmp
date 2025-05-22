@@ -10,4 +10,6 @@ data/*
 log/*
 !log/.gitkeep
 www/go/*
+!www/go/.gitkeep
 www/php/*
+!www/php/.gitkeep
