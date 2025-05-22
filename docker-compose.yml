@@ -1,0 +1,76 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:1.16
+    container_name: nginx
+    environment:
+      TZ: "Asia/Shanghai"
+    restart: always
+    volumes:
+      - ./conf/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      - ./log/nginx/:/var/log/nginx/:rw
+      - ./www/php/:/var/www/html/:rw
+    ports:
+      - "80:80"
+
+  php:
+    build: ./build/php
+    container_name: php
+    environment:
+      TZ: "Asia/Shanghai"
+    restart: always
+    volumes:
+      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./conf/supervisor/conf.d/:/etc/supervisor/conf.d/:rw # 挂载supervisor配置
+      - ./www/php/:/var/www/html/:rw
+      - ~/.ssh/:/root/.ssh/:ro # 挂载ssh配置
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      TZ: "Asia/Shanghai"
+      MYSQL_ROOT_PASSWORD: "root"
+    restart: always
+    volumes:
+      - ./conf/mysql/conf.d/:/etc/mysql/conf.d/:ro
+      - ./data/mysql/:/var/lib/mysql/:rw
+    ports:
+      - "3306:3306"
+
+  mongodb:
+    image: mongo:4.2
+    container_name: mongodb
+    environment:
+      TZ: "Asia/Shanghai"
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+    restart: always
+    volumes:
+      - ./data/mongodb/:/data/db/:rw
+    ports:
+      - "27017:27017"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:22.8
+    container_name: clickhouse
+    environment:
+      TZ: "Asia/Shanghai"
+      CLICKHOUSE_USER: "root"
+      CLICKHOUSE_PASSWORD: "root"
+    restart: always
+    volumes:
+      - ./data/clickhouse/:/var/lib/clickhouse/:rw
+    ports:
+      - "8123:8123" # http端口
+      - "9100:9000" # tcp端口
+
+  redis:
+    image: redis:5.0
+    container_name: redis
+    environment:
+      TZ: "Asia/Shanghai"
+    restart: always
+    ports:
+      - "6379:6379"

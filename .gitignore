@@ -1,0 +1,13 @@
+.DS_Store
+.git/
+.idea/
+conf/nginx/conf.d/*
+!conf/nginx/conf.d/localhost.conf
+conf/supervisor/conf.d/*
+!conf/supervisor/conf.d/php-fpm.conf
+data/*
+!data/.gitkeep
+log/*
+!log/.gitkeep
+www/go/*
+www/php/*
