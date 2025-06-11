@@ -12,4 +12,4 @@ log/*
 www/go/*
 !www/go/.gitkeep
 www/php/*
-!www/php/.gitkeep
+!www/php/index.php
