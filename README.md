@@ -29,8 +29,14 @@ docker-lnmp
 
 ### QA
 
-1. 如何安装Docker客户端、配置镜像加速器？
+1. 如何安装Docker客户端、以及配置镜像加速器？
     - 阿里云后台->工作台->容器镜像服务->镜像工具->镜像加速器
 
-2. docker-compose首次构建若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
-    - 可能是限流或网络问题，`docker pull php:7.3-fpm` 后重新构建
+2. docker compose首次构建若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
+    - 可能是限流或网络问题，`docker pull php:7.3-fpm` 后再重新构建
+
+3. Docker客户端重启服务时，经常出现某些容器Read timed out？
+    - Docker客户端->Preferences->General，勾上Use Docker Compose V2
+
+4. PHP容器bm2项目运行后，接口请求容易出现504状态码？
+    - Docker客户端->Preferences->Resources，最低CPUs 3个、Memory 3GB

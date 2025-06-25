@@ -1,8 +1,9 @@
 FROM php:7.3-fpm
 
 # 系统依赖
-# 1. imagemagick：pecl扩展-imagick所需
-# 2. git/zip/unzip/libzip-dev/supervisor：项目所需
+# 1. procps：系统所需
+# 2. imagemagick：pecl扩展-imagick所需
+# 3. git/zip/unzip/libzip-dev/supervisor：项目所需
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     libcurl4-openssl-dev \
@@ -16,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     re2c \
     wget \
+    procps \
     imagemagick \
     git \
     zip \
