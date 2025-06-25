@@ -38,5 +38,5 @@ docker-lnmp
 3. Docker客户端重启服务时，经常出现某些容器Read timed out？
     - Docker客户端->Preferences->General，勾上Use Docker Compose V2
 
-4. PHP容器bm2项目运行后，接口请求容易出现504状态码？
+4. PHP容器bm2项目运行后，系统不能正常启动、或接口请求容易出现504状态码？
     - Docker客户端->Preferences->Resources，最低CPUs 3个、Memory 3GB
