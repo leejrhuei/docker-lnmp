@@ -3,6 +3,8 @@
 ```
 docker-lnmp
 ├─ build                    构建目录
+│   ├─ go                   Go构建目录
+│       ├─ Dockerfile       Go构建文件
 │   ├─ php                  PHP构建目录
 │       ├─ Dockerfile       PHP构建文件
 ├─ conf                     配置目录
@@ -14,6 +16,8 @@ docker-lnmp
 │       ├─ php.ini          PHP配置文件
 │   ├─ supervisor           Supervisor配置目录
 │       ├─ conf.d           Supervisor项目配置目录
+│           ├─ go           Supervisor-Go项目配置目录
+│           ├─ php          Supervisor-PHP项目配置目录
 ├─ data                     数据目录
 │   ├─ clickhouse           ClickHouse数据目录
 │   ├─ mongodb              MongoDB数据目录
@@ -32,11 +36,14 @@ docker-lnmp
 1. 如何安装Docker客户端、以及配置镜像加速器？
     - 阿里云后台->工作台->容器镜像服务->镜像工具->镜像加速器
 
-2. docker compose首次构建若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
+2. docker-compose首次构建go时，若提示 `unexpected status code [manifests 1.24.3-bullseye]: 403 Forbidden` ？
+   - 可能是限流或网络问题，`docker pull golang:1.24.3-bullseye` 后再重新构建
+
+3. docker-compose首次构建php时，若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
     - 可能是限流或网络问题，`docker pull php:7.3-fpm` 后再重新构建
 
-3. Docker客户端重启服务时，经常出现某些容器Read timed out？
+4. Docker客户端重启服务时，经常出现某些容器Read timed out？
     - Docker客户端->Preferences->General，勾上Use Docker Compose V2
 
-4. PHP容器bm2项目运行后，系统不能正常启动、或接口请求容易出现504状态码？
-    - Docker客户端->Preferences->Resources，最低CPUs 3个、Memory 3GB
+5. php容器bm2项目运行后，若出现项目不能正常启动、或接口请求504状态码？
+    - Docker客户端->Preferences->Resources，最低CPUs 3、Memory 3GB

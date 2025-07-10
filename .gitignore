@@ -3,8 +3,10 @@
 .idea/
 conf/nginx/conf.d/*
 !conf/nginx/conf.d/localhost.conf
-conf/supervisor/conf.d/*
-!conf/supervisor/conf.d/php-fpm.conf
+conf/supervisor/conf.d/go/*
+!conf/supervisor/conf.d/go/.gitkeep
+conf/supervisor/conf.d/php/*
+!conf/supervisor/conf.d/php/php-fpm.conf
 data/*
 !data/.gitkeep
 log/*

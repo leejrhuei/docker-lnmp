@@ -10,9 +10,21 @@ services:
     volumes:
       - ./conf/nginx/conf.d/:/etc/nginx/conf.d/:ro
       - ./log/nginx/:/var/log/nginx/:rw
+      - ./www/go/:/app/:rw
       - ./www/php/:/var/www/html/:rw
     ports:
       - "80:80"
+
+  go:
+    build: ./build/go
+    container_name: go
+    environment:
+      TZ: "Asia/Shanghai"
+    restart: always
+    volumes:
+      - ./conf/supervisor/conf.d/go/:/etc/supervisor/conf.d/:rw
+      - ./www/go/:/app/:rw
+    working_dir: /app
 
   php:
     build: ./build/php
@@ -21,10 +33,10 @@ services:
       TZ: "Asia/Shanghai"
     restart: always
     volumes:
-      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:ro
-      - ./conf/supervisor/conf.d/:/etc/supervisor/conf.d/:rw # 挂载supervisor配置
-      - ./www/php/:/var/www/html/:rw
       - ~/.ssh/:/root/.ssh/:ro # 挂载ssh配置
+      - ./conf/php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./conf/supervisor/conf.d/php/:/etc/supervisor/conf.d/:rw
+      - ./www/php/:/var/www/html/:rw
 
   mysql:
     image: mysql:5.7
