@@ -1,4 +1,4 @@
-FROM golang:1.24.3-bullseye
+FROM golang:1.24.5-bullseye
 
 ENV CGO_ENABLED=0 \
     GO111MODULE=on \
