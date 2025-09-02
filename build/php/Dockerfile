@@ -3,7 +3,7 @@ FROM php:7.3-fpm
 # 系统依赖
 # 1. procps：系统所需
 # 2. imagemagick：pecl扩展-imagick所需
-# 3. git/zip/unzip/libzip-dev/supervisor：项目所需
+# 3. git/zip/unzip/libzip-dev/libgmp-dev/supervisor：项目所需
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libcurl4-openssl-dev \
@@ -23,10 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip \
     unzip \
     libzip-dev \
+    libgmp-dev \
     supervisor
 
 # 核心扩展
-RUN docker-php-ext-install pdo_mysql bcmath gd zip pcntl
+RUN docker-php-ext-install pdo_mysql bcmath gd zip pcntl gmp
 
 # pecl扩展
 RUN pecl install redis-5.3.4 \
