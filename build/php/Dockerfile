@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmcrypt-dev \
     re2c \
     wget \
+    openssh-client \
     procps \
     imagemagick \
     git \
