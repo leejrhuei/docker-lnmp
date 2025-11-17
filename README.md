@@ -36,14 +36,8 @@ docker-lnmp
 1. 如何安装Docker客户端、以及配置镜像加速器？
     - 阿里云后台->工作台->容器镜像服务->镜像工具->镜像加速器
 
-2. docker-compose首次构建go时，若提示 `unexpected status code [manifests 1.24.5-bullseye]: 403 Forbidden` ？
+2. docker compose首次构建go时，若提示 `unexpected status code [manifests 1.24.5-bullseye]: 403 Forbidden` ？
     - 可能是限流或网络问题，`docker pull golang:1.24.5-bullseye` 后再重新构建
 
-3. docker-compose首次构建php时，若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
+3. docker compose首次构建php时，若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
     - 可能是限流或网络问题，`docker pull php:7.3-fpm` 后再重新构建
-
-4. Docker客户端重启服务时，经常出现某些容器Read timed out？
-    - Docker客户端->Preferences->General，勾上Use Docker Compose V2
-
-5. php容器bm2项目运行后，若出现项目不能正常启动、或接口请求504状态码？
-    - Docker客户端->Preferences->Resources，最低CPUs 3、Memory 3GB
