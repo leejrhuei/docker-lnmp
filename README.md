@@ -23,6 +23,7 @@ docker-lnmp
 │   ├─ mongodb              MongoDB数据目录
 │   ├─ mysql                MySQL数据目录
 ├─ log                      日志目录
+│   ├─ mysql                MySQL日志目录
 │   ├─ nginx                Nginx日志目录
 ├─ www                      项目目录
 │   ├─ go                   Go项目目录
