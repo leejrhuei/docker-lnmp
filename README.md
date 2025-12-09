@@ -26,6 +26,7 @@ docker-lnmp
 │   ├─ mysql                MySQL日志目录
 │   ├─ nginx                Nginx日志目录
 ├─ www                      项目目录
+│   ├─ fm                   前端项目目录
 │   ├─ go                   Go项目目录
 │   ├─ php                  PHP项目目录
 ├─ docker-compose.yml       容器配置文件

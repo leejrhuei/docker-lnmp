@@ -8,10 +8,12 @@ services:
     volumes:
       - ./conf/nginx/conf.d/:/etc/nginx/conf.d/:ro
       - ./log/nginx/:/var/log/nginx/:rw
-      - ./www/go/:/app/:rw
-      - ./www/php/:/var/www/html/:rw
+      - ./www/fm/:/var/www/html/fm/:rw
+      - ./www/go/:/var/www/html/go/:rw
+      - ./www/php/:/var/www/html/php/:rw
     ports:
       - "80:80"
+    working_dir: /var/www/html/
 
   go:
     build: ./build/go
@@ -22,7 +24,7 @@ services:
     volumes:
       - ./conf/supervisor/conf.d/go/:/etc/supervisor/conf.d/:rw
       - ./www/go/:/app/:rw
-    working_dir: /app
+    working_dir: /app/
 
   php:
     build: ./build/php
@@ -34,7 +36,8 @@ services:
       - ~/.ssh/:/root/.ssh/:ro # 挂载ssh配置
       - ./conf/php/php.ini:/usr/local/etc/php/php.ini:ro
       - ./conf/supervisor/conf.d/php/:/etc/supervisor/conf.d/:rw
-      - ./www/php/:/var/www/html/:rw
+      - ./www/php/:/var/www/html/php/:rw
+    working_dir: /var/www/html/php/
 
   mysql:
     image: mysql:5.7

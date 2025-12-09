@@ -11,6 +11,8 @@ data/*
 !data/.gitkeep
 log/*
 !log/.gitkeep
+www/fm/*
+!www/fm/.gitkeep
 www/go/*
 !www/go/.gitkeep
 www/php/*
