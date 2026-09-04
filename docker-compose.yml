@@ -3,53 +3,53 @@ services:
     image: nginx:1.16
     container_name: nginx
     environment:
-      TZ: "Asia/Shanghai"
+      - TZ=Asia/Shanghai
     restart: always
     volumes:
-      - ./conf/nginx/conf.d/:/etc/nginx/conf.d/:ro
-      - ./log/nginx/:/var/log/nginx/:rw
-      - ./www/fm/:/var/www/html/fm/:rw
-      - ./www/go/:/var/www/html/go/:rw
-      - ./www/php/:/var/www/html/php/:rw
+      - ./conf/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./log/nginx:/var/log/nginx
+      - ./www/fm:/var/www/html/fm
+      - ./www/go:/var/www/html/go
+      - ./www/php:/var/www/html/php
     ports:
       - "80:80"
-    working_dir: /var/www/html/
+    working_dir: /var/www/html
 
   go:
     build: ./build/go
     container_name: go
     environment:
-      TZ: "Asia/Shanghai"
+      - TZ=Asia/Shanghai
     restart: always
     volumes:
-      - ./conf/supervisor/conf.d/go/:/etc/supervisor/conf.d/:rw
-      - ./www/go/:/app/:rw
-    working_dir: /app/
+      - ./conf/supervisor/conf.d/go:/etc/supervisor/conf.d
+      - ./www/go:/app
+    working_dir: /app
 
   php:
     build: ./build/php
     container_name: php
     environment:
-      TZ: "Asia/Shanghai"
+      - TZ=Asia/Shanghai
     restart: always
     volumes:
-      - ~/.ssh/:/root/.ssh/:ro # 挂载ssh配置
+      - ~/.ssh:/root/.ssh:ro # 挂载ssh配置
       - ./conf/php/php.ini:/usr/local/etc/php/php.ini:ro
-      - ./conf/supervisor/conf.d/php/:/etc/supervisor/conf.d/:rw
-      - ./www/php/:/var/www/html/php/:rw
-    working_dir: /var/www/html/php/
+      - ./conf/supervisor/conf.d/php:/etc/supervisor/conf.d
+      - ./www/php:/var/www/html/php
+    working_dir: /var/www/html/php
 
   mysql:
     image: mysql:5.7
     container_name: mysql
     environment:
-      TZ: "Asia/Shanghai"
-      MYSQL_ROOT_PASSWORD: "root"
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Shanghai
     restart: always
     volumes:
-      - ./conf/mysql/conf.d/:/etc/mysql/conf.d/:ro
-      - ./data/mysql/:/var/lib/mysql/:rw
-      - ./log/mysql/:/var/log/mysql/:rw
+      - ./conf/mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./data/mysql:/var/lib/mysql
+      - ./log/mysql:/var/log/mysql
     ports:
       - "3306:3306"
 
@@ -57,12 +57,12 @@ services:
     image: mongo:4.2
     container_name: mongodb
     environment:
-      TZ: "Asia/Shanghai"
-      MONGO_INITDB_ROOT_USERNAME: "root"
-      MONGO_INITDB_ROOT_PASSWORD: "root"
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - TZ=Asia/Shanghai
     restart: always
     volumes:
-      - ./data/mongodb/:/data/db/:rw
+      - ./data/mongodb:/data/db
     ports:
       - "27017:27017"
 
@@ -70,12 +70,12 @@ services:
     image: clickhouse/clickhouse-server:22.8
     container_name: clickhouse
     environment:
-      TZ: "Asia/Shanghai"
-      CLICKHOUSE_USER: "root"
-      CLICKHOUSE_PASSWORD: "root"
+      - CLICKHOUSE_USER=root
+      - CLICKHOUSE_PASSWORD=root
+      - TZ=Asia/Shanghai
     restart: always
     volumes:
-      - ./data/clickhouse/:/var/lib/clickhouse/:rw
+      - ./data/clickhouse:/var/lib/clickhouse
     ports:
       - "8123:8123" # http端口
       - "9100:9000" # tcp端口
@@ -84,7 +84,9 @@ services:
     image: redis:5.0
     container_name: redis
     environment:
-      TZ: "Asia/Shanghai"
+      - TZ=Asia/Shanghai
     restart: always
+    volumes:
+      - ./data/redis:/data
     ports:
       - "6379:6379"
