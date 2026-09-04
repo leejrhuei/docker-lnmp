@@ -19,12 +19,7 @@ docker-lnmp
 │           ├─ go           Supervisor-Go项目配置目录
 │           ├─ php          Supervisor-PHP项目配置目录
 ├─ data                     数据目录
-│   ├─ clickhouse           ClickHouse数据目录
-│   ├─ mongodb              MongoDB数据目录
-│   ├─ mysql                MySQL数据目录
 ├─ log                      日志目录
-│   ├─ mysql                MySQL日志目录
-│   ├─ nginx                Nginx日志目录
 ├─ www                      项目目录
 │   ├─ fm                   前端项目目录
 │   ├─ go                   Go项目目录
@@ -35,27 +30,26 @@ docker-lnmp
 
 ### QA
 
-1. 安装Docker客户端？
-    - 阿里云后台->工作台->容器镜像服务->镜像工具->镜像加速器
+1. Mac 安装/升级 Docker 客户端？
 
-2. 配置镜像加速器？
-    - 具体举例见下方
-   ```json
-   {
-      "registry-mirrors": [
-         "https://docker.1panel.live",
-         "https://docker.anyhub.us.kg",
-         "https://docker.awsl9527.cn",
-         "https://docker.chenby.cn",
-         "https://docker.fxxk.dedyn.io",
-         "https://dockerhub.icu",
-         "https://dhub.kubesre.xyz"
-      ]
-   }
-   ```
+```text
+对于10.10.3以下的用户 推荐使用Docker Toolbox
+Mac安装文件：http://mirrors.aliyun.com/docker-toolbox/mac/docker-toolbox/
 
-3. docker compose首次构建go时，若提示 `unexpected status code [manifests 1.24.5-bullseye]: 403 Forbidden` ？
-    - 可能是限流或网络问题，`docker pull golang:1.24.5-bullseye` 后再重新构建
+对于10.10.3以上的用户 推荐使用Docker for Mac
+Mac安装文件：http://mirrors.aliyun.com/docker-toolbox/mac/docker-for-mac/
+```
 
-4. docker compose首次构建php时，若提示 `unexpected status code [manifests 7.3-fpm]: 403 Forbidden` ？
-    - 可能是限流或网络问题，`docker pull php:7.3-fpm` 后再重新构建
+2. 配置镜像源？
+
+```json
+{
+  "registry-mirrors": [
+    "https://2a6bf1988cb6428c877f723ec7530dbc.mirror.swr.myhuaweicloud.com",
+    "https://docker.1ms.run",
+    "https://proxy.vvvv.ee",
+    "https://wget.la",
+    "https://dockerproxy.net"
+  ]
+}
+```
