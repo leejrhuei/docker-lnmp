@@ -1,6 +1,6 @@
 ### 项目结构
 
-```
+```text
 docker-lnmp
 ├─ build                    构建目录
 │   ├─ go                   Go构建目录
